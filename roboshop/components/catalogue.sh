@@ -4,4 +4,4 @@ COMPONENT="catalogue"
 
 source components/common.sh
 
-NODEJS                          # Calling Nodej Function
+NODEJS                          # here we are Calling Nodej Function
