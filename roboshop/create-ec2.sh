@@ -6,3 +6,5 @@ AMI_ID=$(aws ec2 describe-images --filters "Name=name,Values=DevOps-LabImage-Cen
 
 echo "AMI ID is $AMI_ID"
 
+
+aws ec2 run-instances --image-id $(AMI_ID) --instance-type t2.micro
