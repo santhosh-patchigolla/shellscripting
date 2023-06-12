@@ -26,5 +26,6 @@ echo -e  "*** Launching $COMPONENT server **** "
 echo -e "Private IP Address of $COMPONENT is $IPADDRESS"  
 
 echo -e "\e[36m **** Creating DNS Record for the $COMPONENT has completed **** \e[0m"
-sed -e "s/COMPONENT/${COMPONENT}/" -e "s/IPADDRESS/${IPADDRESS}/" roboshop/route53.json > /tmp/record.json
+
+sed -e "s/COMPONENT/${COMPONENT}/" -e "s/IPADDRESS/${IPADDRESS}/" route53.json > /tmp/record.json
 aws route53 creating-resource-records --hosted-zone-id $HOSTEDZONEID --change-batch file://route53.json
