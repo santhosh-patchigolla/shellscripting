@@ -3,13 +3,13 @@
 # AMI_ID="ami-0c1d144c8fdd8d690"
 
 COMPONENT=$1
+HOSTEDZONEID="Z069258112MM0I3IYRYGR"
 
 if [ -z "$1" ] ; then
     echo -e "COMPONENT NAME IS NEEDED"
     echo -e "Ex Usage : \n \t \t  bash create-ec2 componentName"
     exit 1
 fi 
-
 
 AMI_ID=$(aws ec2 describe-images --filters "Name=name,Values=DevOps-LabImage-CentOS7" | jq '.Images[].ImageId'|sed -e 's/"//g')
 SG_ID=$(aws ec2 describe-security-groups --filters Name=group-name,Values=allow-all-sg-b54 | jq '.SecurityGroups[].GroupID' | sed -e 's/"//g')
@@ -21,4 +21,10 @@ echo -e  "*** Launching server **** "
 
 IPADDRESS=$(aws ec2 run-instances --image-id ami-0c1d144c8fdd8d690 --instance-type t3.micro --security-group-ids sg-08212398e8c9c44b6 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$COMPONENT}]" | jq '.Instances[].PrivateIpAddress' | sed -e 's/"//g')
 
-echo -e "Private IP Address of $COMPONENT is $IPADDRESS"        
+echo -e  "*** Launching $COMPONENT server **** "
+
+echo -e "Private IP Address of $COMPONENT is $IPADDRESS"  
+      
+echo -e "\e[36m **** Creating DNS Record for the $COMPONENT has completed **** \e[0m"
+sed -e "s/COMPONENT/${COMPONENT}/" -e "s/IPADDRESS/${IPADDRESS}" roboshop/route53.json > /tmp/record.json
+aws route53 creating-resource-records --hosted-zone-id $HOSTEDZONEID --change-batch file://route53.json
