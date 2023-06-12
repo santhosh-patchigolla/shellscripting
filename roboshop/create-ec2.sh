@@ -6,7 +6,7 @@ COMPONENT=$1
 
 if [ -z "$1" ] ; then
     echo -e "COMPONENT NAME IS NEEDED"
-    echo -e "Ex Usage : bash create-ec2 componentName"
+    echo -e "Ex Usage : \n \t \t  bash create-ec2 componentName"
     exit 1
 fi 
 
